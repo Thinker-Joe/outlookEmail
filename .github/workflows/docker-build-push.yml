@@ -15,7 +15,7 @@ on:
       - 'uv.lock'
       - 'Dockerfile'
       - 'docker-compose.yaml'
-      - 'compose.env.example'
+      - '.env.example'
       - '.dockerignore'
       - 'templates/**'
       - 'static/**'

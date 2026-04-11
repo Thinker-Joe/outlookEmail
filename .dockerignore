@@ -40,7 +40,6 @@ Thumbs.db
 Dockerfile
 docker-compose.yml
 docker-compose.yaml
-compose.env.example
 .dockerignore
 
 # OMX / local runtime

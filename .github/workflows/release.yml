@@ -98,7 +98,7 @@ jobs:
         shell: bash
         run: |
           cp docker-compose.yaml release-assets/docker-compose.yaml
-          cp compose.env.example release-assets/compose.env.example
+          cp .env.example release-assets/.env.example
           cp docs/deployment.md release-assets/deployment.md
 
       - name: Create GitHub Release
@@ -109,4 +109,6 @@ jobs:
           body: ${{ steps.notes.outputs.body }}
           draft: false
           prerelease: false
-          files: release-assets/*
+          files: |
+            release-assets/*
+            release-assets/.env.example

@@ -62,10 +62,10 @@ docker run -d \
 
 ### 方式三：使用 Docker Compose 直接部署（无需本地构建）
 
-仓库根目录已提供 `docker-compose.yaml` 和 `compose.env.example`，也会随 GitHub Release 一起发布。
+仓库根目录已提供 `docker-compose.yaml` 和 `.env.example`，也会随 GitHub Release 一起发布。
 
 ```bash
-cp compose.env.example .env
+cp .env.example .env
 # 修改 .env 里的 SECRET_KEY 等配置
 docker compose pull
 docker compose up -d

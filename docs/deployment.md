@@ -52,7 +52,7 @@ docker rm outlook-mail-reader
 ### 1）准备环境变量
 
 ```bash
-cp compose.env.example .env
+cp .env.example .env
 ```
 
 至少修改以下配置：

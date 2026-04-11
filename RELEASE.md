@@ -91,7 +91,7 @@ When you push a `v*` tag, GitHub Actions automatically creates a GitHub Release 
 
 - the Windows package
 - `docker-compose.yaml`
-- `compose.env.example`
+- `.env.example`
 - `docs/deployment.md`
 
 This allows users to deploy the published GHCR image directly with Docker Compose, without building locally.
