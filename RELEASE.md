@@ -74,11 +74,11 @@ git push origin v1.0.1
 
 The GitHub Actions workflow publishes these image tags:
 
-- `ghcr.io/assast/outlookemail:latest` → stable default branch build
-- `ghcr.io/assast/outlookemail:main` → latest `main`
-- `ghcr.io/assast/outlookemail:dev` → latest `dev`
-- `ghcr.io/assast/outlookemail:vX.Y.Z` → tagged release image
-- `ghcr.io/assast/outlookemail:sha-<commit>` → exact commit image
+- `ghcr.io/Thinker-Joe/outlookemail:latest` → stable default branch build
+- `ghcr.io/Thinker-Joe/outlookemail:main` → latest `main`
+- `ghcr.io/Thinker-Joe/outlookemail:dev` → latest `dev`
+- `ghcr.io/Thinker-Joe/outlookemail:vX.Y.Z` → tagged release image
+- `ghcr.io/Thinker-Joe/outlookemail:sha-<commit>` → exact commit image
 
 ## Windows executable
 
@@ -90,7 +90,7 @@ When you push a `v*` tag, GitHub Actions also builds a Windows `exe` with PyInst
 When you push a `v*` tag, GitHub Actions automatically creates a GitHub Release using the matching section from `CHANGELOG.md` when available, and uploads:
 
 - the Windows package
-- `compose.yaml`
+- `docker-compose.yaml`
 - `compose.env.example`
 - `docs/deployment.md`
 

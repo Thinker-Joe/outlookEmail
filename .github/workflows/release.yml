@@ -97,7 +97,7 @@ jobs:
       - name: Add compose deployment assets
         shell: bash
         run: |
-          cp compose.yaml release-assets/compose.yaml
+          cp docker-compose.yaml release-assets/docker-compose.yaml
           cp compose.env.example release-assets/compose.env.example
           cp docs/deployment.md release-assets/deployment.md
 

@@ -4,7 +4,7 @@
 
 **方式一：通过环境变量**
 
-在 `compose.yaml` / `.env` 中：
+在 `docker-compose.yaml` / `.env` 中：
 ```yaml
 environment:
   - LOGIN_PASSWORD=your_secure_password_here

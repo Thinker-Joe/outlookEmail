@@ -1,6 +1,6 @@
 services:
   outlook-mail-reader:
-    image: ${OUTLOOKEMAIL_IMAGE:-ghcr.io/assast/outlookemail:latest}
+    image: ${OUTLOOKEMAIL_IMAGE:-ghcr.io/Thinker-Joe/outlookemail:latest}
     container_name: ${OUTLOOKEMAIL_CONTAINER_NAME:-outlook-mail-reader}
     restart: unless-stopped
     ports:

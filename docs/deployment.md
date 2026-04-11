@@ -20,7 +20,7 @@
 
 ```bash
 # 拉取最新镜像
-docker pull ghcr.io/assast/outlookemail:latest
+docker pull ghcr.io/Thinker-Joe/outlookemail:latest
 
 # 运行容器
 docker run -d \
@@ -29,7 +29,7 @@ docker run -d \
   -v $(pwd)/data:/app/data \
   -e LOGIN_PASSWORD=admin123 \
   -e SECRET_KEY=your-secret-key-here \
-  ghcr.io/assast/outlookemail:latest
+  ghcr.io/Thinker-Joe/outlookemail:latest
 
 # 查看日志
 docker logs -f outlook-mail-reader
@@ -47,7 +47,7 @@ docker rm outlook-mail-reader
 
 ## 方式三：使用 Docker Compose 直接部署（推荐服务器部署）
 
-仓库根目录提供了可直接部署的 `compose.yaml`，默认使用 GitHub Actions 发布到 GHCR 的镜像，不需要本地执行 `docker build`。
+仓库根目录提供了可直接部署的 `docker-compose.yaml`，默认使用 GitHub Actions 发布到 GHCR 的镜像，不需要本地执行 `docker build`。
 
 ### 1）准备环境变量
 
@@ -59,7 +59,7 @@ cp compose.env.example .env
 
 - `SECRET_KEY`
 - `LOGIN_PASSWORD`
-- `OUTLOOKEMAIL_IMAGE`（如需切换到指定版本，例如 `ghcr.io/assast/outlookemail:v2.0.7`）
+- `OUTLOOKEMAIL_IMAGE`（如需切换到指定版本，例如 `ghcr.io/Thinker-Joe/outlookemail:v2.0.7`）
 
 ### 2）直接拉取并启动
 
@@ -155,7 +155,7 @@ python -c 'import secrets; print(secrets.token_hex(32))'
 
 ## 端口映射
 
-默认映射 5000 端口，可以在 `compose.yaml` 或 `.env` 中修改：
+默认映射 5000 端口，可以在 `docker-compose.yaml` 或 `.env` 中修改：
 
 ```yaml
 ports:
@@ -168,11 +168,11 @@ ports:
 
 ### 可用镜像标签
 
-- `ghcr.io/assast/outlookemail:latest` - 默认稳定版（默认分支）
-- `ghcr.io/assast/outlookemail:main` - main 分支最新版本
-- `ghcr.io/assast/outlookemail:dev` - dev 分支最新开发版
-- `ghcr.io/assast/outlookemail:v1.0.0` - 指定正式版本镜像
-- `ghcr.io/assast/outlookemail:sha-<commit>` - 指定某次提交对应镜像
+- `ghcr.io/Thinker-Joe/outlookemail:latest` - 默认稳定版（默认分支）
+- `ghcr.io/Thinker-Joe/outlookemail:main` - main 分支最新版本
+- `ghcr.io/Thinker-Joe/outlookemail:dev` - dev 分支最新开发版
+- `ghcr.io/Thinker-Joe/outlookemail:v1.0.0` - 指定正式版本镜像
+- `ghcr.io/Thinker-Joe/outlookemail:sha-<commit>` - 指定某次提交对应镜像
 
 ### 更新镜像
 
