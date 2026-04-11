@@ -18,8 +18,8 @@ lsof -i :5000
 
 # 4. 重新拉取镜像并重启
 docker pull ghcr.io/assast/outlookemail:latest
-docker-compose down
-docker-compose up -d
+docker compose down
+docker compose up -d
 ```
 
 **正确的日志应该显示：**
@@ -41,18 +41,18 @@ GPTMail API: https://mail.chatgpt.org.uk
 
 ```bash
 # 方法 1：删除旧数据库，重新初始化
-docker-compose down
+docker compose down
 rm -rf data/outlook_accounts.db
-docker-compose up -d
+docker compose up -d
 
 # 方法 2：手动初始化数据库
 docker exec outlook-mail-reader python -c "from web_outlook_app import init_db; init_db()"
-docker-compose restart
+docker compose restart
 
 # 方法 3：使用最新镜像
 docker pull ghcr.io/assast/outlookemail:latest
-docker-compose down
-docker-compose up -d
+docker compose down
+docker compose up -d
 ```
 
 ### 无法获取邮件
@@ -75,10 +75,10 @@ docker-compose up -d
 
 ```bash
 docker ps
-docker-compose logs
+docker compose logs
 curl http://localhost:5000/login
 sudo nginx -t
-docker-compose restart
+docker compose restart
 sudo systemctl reload nginx
 ```
 
@@ -105,11 +105,11 @@ sudo systemctl reload nginx
 **错误信息：** `sqlite3.OperationalError: database is locked`
 
 ```bash
-docker-compose restart
+docker compose restart
 lsof data/outlook_accounts.db
 cp data/outlook_accounts.db data/outlook_accounts.db.backup
-docker-compose down
-docker-compose up -d
+docker compose down
+docker compose up -d
 ```
 
 ---

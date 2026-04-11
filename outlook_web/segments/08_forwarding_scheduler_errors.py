@@ -688,7 +688,7 @@ def init_scheduler():
                 enable_scheduled = get_setting('enable_scheduled_refresh', 'true').lower() == 'true'
 
                 if not enable_scheduled:
-                    print("✓ 定时刷新已禁用")
+                    print("[OK] 定时刷新已禁用")
                     return None
 
                 use_cron = get_setting('use_cron_schedule', 'false').lower() == 'true'
@@ -727,13 +727,13 @@ def init_scheduler():
                             )
                             scheduler.start()
                             scheduler_instance = scheduler
-                            print(f"✓ 定时任务已启动：Cron 表达式 '{cron_expr}'")
+                            print(f"[OK] 定时任务已启动：Cron 表达式 '{cron_expr}'")
                             atexit.register(lambda: scheduler.shutdown())
                             return scheduler_instance
                         else:
-                            print(f"⚠ Cron 表达式格式错误，回退到默认配置")
+                            print("Cron 表达式格式错误，回退到默认配置")
                     except Exception as e:
-                        print(f"⚠ Cron 表达式解析失败: {str(e)}，回退到默认配置")
+                        print(f"Cron 表达式解析失败: {str(e)}，回退到默认配置")
 
                 refresh_interval_days = int(get_setting('refresh_interval_days', '30'))
                 scheduler.add_job(
@@ -754,17 +754,17 @@ def init_scheduler():
                 )
                 scheduler.start()
                 scheduler_instance = scheduler
-                print(f"✓ 定时任务已启动：每天凌晨 2:00 检查刷新（周期：{refresh_interval_days} 天）")
+                print(f"[OK] 定时任务已启动：每天凌晨 2:00 检查刷新（周期：{refresh_interval_days} 天）")
 
             atexit.register(lambda: scheduler.shutdown())
 
             return scheduler_instance
         except ImportError:
-            print("⚠ APScheduler 未安装，定时任务功能不可用")
-            print("  安装命令：pip install APScheduler>=3.10.0")
+            print("APScheduler 未安装，定时任务功能不可用")
+            print("  安装命令：uv add APScheduler>=3.10.0")
             return None
         except Exception as e:
-            print(f"⚠ 定时任务初始化失败：{str(e)}")
+            print(f"定时任务初始化失败：{str(e)}")
             return None
 
 

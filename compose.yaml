@@ -1,0 +1,31 @@
+services:
+  outlook-mail-reader:
+    image: ${OUTLOOKEMAIL_IMAGE:-ghcr.io/assast/outlookemail:latest}
+    container_name: ${OUTLOOKEMAIL_CONTAINER_NAME:-outlook-mail-reader}
+    restart: unless-stopped
+    ports:
+      - "${OUTLOOKEMAIL_PORT:-5000}:5000"
+    environment:
+      SECRET_KEY: ${SECRET_KEY:-change-me}
+      LOGIN_PASSWORD: ${LOGIN_PASSWORD:-admin123}
+      FLASK_ENV: ${FLASK_ENV:-production}
+      GUNICORN_TIMEOUT: ${GUNICORN_TIMEOUT:-300}
+      GUNICORN_THREADS: ${GUNICORN_THREADS:-4}
+      IMAP_TIMEOUT: ${IMAP_TIMEOUT:-45}
+      GPTMAIL_BASE_URL: ${GPTMAIL_BASE_URL:-https://mail.chatgpt.org.uk}
+      GPTMAIL_API_KEY: ${GPTMAIL_API_KEY:-gpt-test}
+      DUCKMAIL_BASE_URL: ${DUCKMAIL_BASE_URL:-https://api.duckmail.sbs}
+      DUCKMAIL_API_KEY: ${DUCKMAIL_API_KEY:-}
+      CLOUDFLARE_WORKER_DOMAIN: ${CLOUDFLARE_WORKER_DOMAIN:-}
+      CLOUDFLARE_EMAIL_DOMAINS: ${CLOUDFLARE_EMAIL_DOMAINS:-}
+      CLOUDFLARE_ADMIN_PASSWORD: ${CLOUDFLARE_ADMIN_PASSWORD:-}
+      OAUTH_CLIENT_ID: ${OAUTH_CLIENT_ID:-}
+      OAUTH_REDIRECT_URI: ${OAUTH_REDIRECT_URI:-}
+    volumes:
+      - ${OUTLOOKEMAIL_DATA_DIR:-./data}:/app/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:5000/login >/dev/null || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 20s

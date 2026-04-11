@@ -78,6 +78,7 @@ The GitHub Actions workflow publishes these image tags:
 - `ghcr.io/assast/outlookemail:main` → latest `main`
 - `ghcr.io/assast/outlookemail:dev` → latest `dev`
 - `ghcr.io/assast/outlookemail:vX.Y.Z` → tagged release image
+- `ghcr.io/assast/outlookemail:sha-<commit>` → exact commit image
 
 ## Windows executable
 
@@ -86,4 +87,11 @@ When you push a `v*` tag, GitHub Actions also builds a Windows `exe` with PyInst
 
 ## GitHub Release
 
-When you push a `v*` tag, GitHub Actions automatically creates a GitHub Release using the matching section from `CHANGELOG.md` when available, and uploads the Windows package as a release asset.
+When you push a `v*` tag, GitHub Actions automatically creates a GitHub Release using the matching section from `CHANGELOG.md` when available, and uploads:
+
+- the Windows package
+- `compose.yaml`
+- `compose.env.example`
+- `docs/deployment.md`
+
+This allows users to deploy the published GHCR image directly with Docker Compose, without building locally.

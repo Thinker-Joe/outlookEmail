@@ -14,7 +14,7 @@
 
 默认访问地址仍为 `http://127.0.0.1:5000`。
 
-## 方式二：使用 Docker（推荐服务器部署）
+## 方式二：使用 Docker（单容器部署）
 
 直接使用 GitHub Actions 自动构建的镜像，无需本地构建：
 
@@ -45,7 +45,50 @@ docker rm outlook-mail-reader
 - 创建默认分组和临时邮箱分组
 - 设置默认密码（admin123）
 
-## 方式三：使用 Python 直接运行
+## 方式三：使用 Docker Compose 直接部署（推荐服务器部署）
+
+仓库根目录提供了可直接部署的 `compose.yaml`，默认使用 GitHub Actions 发布到 GHCR 的镜像，不需要本地执行 `docker build`。
+
+### 1）准备环境变量
+
+```bash
+cp compose.env.example .env
+```
+
+至少修改以下配置：
+
+- `SECRET_KEY`
+- `LOGIN_PASSWORD`
+- `OUTLOOKEMAIL_IMAGE`（如需切换到指定版本，例如 `ghcr.io/assast/outlookemail:v2.0.7`）
+
+### 2）直接拉取并启动
+
+```bash
+docker compose pull
+docker compose up -d
+```
+
+### 3）查看状态与日志
+
+```bash
+docker compose ps
+docker compose logs -f
+```
+
+### 4）停止服务
+
+```bash
+docker compose down
+```
+
+### 5）更新到最新镜像
+
+```bash
+docker compose pull
+docker compose up -d
+```
+
+## 方式四：使用 uv 直接运行
 
 ```bash
 # 克隆仓库
@@ -53,7 +96,7 @@ git clone https://github.com/assast/outlookEmail.git
 cd outlookEmail
 
 # 安装依赖
-pip install -r requirements.txt
+uv sync
 
 # 设置环境变量
 export LOGIN_PASSWORD=admin123
@@ -61,48 +104,16 @@ export SECRET_KEY=your-secret-key-here
 export PORT=5000
 
 # 运行应用
-python web_outlook_app.py
+uv run python web_outlook_app.py
 ```
 
 访问 `http://localhost:5000` 即可使用。
 服务器部署建议始终显式设置固定 `SECRET_KEY`。
 
-## 使用 Docker Compose
-
-```yaml
-version: '3.8'
-
-services:
-  outlook-mail-reader:
-    image: ghcr.io/assast/outlookemail:latest
-    container_name: outlook-mail-reader
-    ports:
-      - "5000:5000"
-    volumes:
-      - ./data:/app/data
-    environment:
-      - LOGIN_PASSWORD=admin123
-      - SECRET_KEY=your-secret-key-here
-      - FLASK_ENV=production
-      - GPTMAIL_API_KEY=your-api-key
-    restart: unless-stopped
-```
-
-```bash
-# 启动服务
-docker-compose up -d
-
-# 查看定时任务启动日志（应出现“定时任务已启动”）
-docker-compose logs -f
-
-# 停止服务
-docker-compose down
-```
-
 ## 定时刷新说明
 
-- 应用在 `python web_outlook_app.py`、Docker、Docker Compose、Gunicorn 单 worker 模式下都会自动初始化定时任务。
-- 如需确认定时任务是否已启动，可执行 `docker-compose logs -f`，日志中应出现“定时任务已启动”。
+- 应用在 `uv run python web_outlook_app.py`、Docker、Docker Compose、Gunicorn 单 worker 模式下都会自动初始化定时任务。
+- 如需确认定时任务是否已启动，可执行 `docker compose logs -f`，日志中应出现“定时任务已启动”。
 - 若使用 Cron 模式，请确认已在系统设置中开启 `use_cron_schedule`，并填写正确的 5 段 Cron 表达式。
 
 ## 环境变量配置
@@ -144,7 +155,7 @@ python -c 'import secrets; print(secrets.token_hex(32))'
 
 ## 端口映射
 
-默认映射 5000 端口，可以在 `docker-compose.yml` 中修改：
+默认映射 5000 端口，可以在 `compose.yaml` 或 `.env` 中修改：
 
 ```yaml
 ports:
@@ -161,13 +172,13 @@ ports:
 - `ghcr.io/assast/outlookemail:main` - main 分支最新版本
 - `ghcr.io/assast/outlookemail:dev` - dev 分支最新开发版
 - `ghcr.io/assast/outlookemail:v1.0.0` - 指定正式版本镜像
+- `ghcr.io/assast/outlookemail:sha-<commit>` - 指定某次提交对应镜像
 
 ### 更新镜像
 
 ```bash
-docker pull ghcr.io/assast/outlookemail:latest
-docker-compose down
-docker-compose up -d
+docker compose pull
+docker compose up -d
 ```
 
 ### 自己构建镜像（可选）

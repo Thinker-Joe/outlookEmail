@@ -10,6 +10,7 @@ build/
 
 # 虚拟环境
 venv/
+.venv/
 env/
 ENV/
 
@@ -38,7 +39,12 @@ Thumbs.db
 # Docker
 Dockerfile
 docker-compose.yml
+compose.yaml
+compose.env.example
 .dockerignore
+
+# OMX / local runtime
+.omx/
 
 # 文档
 README.md

@@ -60,41 +60,36 @@ docker run -d \
   ghcr.io/assast/outlookemail:latest
 ```
 
-### 方式三：使用 Python 直接运行
+### 方式三：使用 Docker Compose 直接部署（无需本地构建）
+
+仓库根目录已提供 `compose.yaml` 和 `compose.env.example`，也会随 GitHub Release 一起发布。
+
+```bash
+cp compose.env.example .env
+# 修改 .env 里的 SECRET_KEY 等配置
+docker compose pull
+docker compose up -d
+```
+
+查看运行状态：
+
+```bash
+docker compose ps
+docker compose logs -f
+```
+
+### 方式四：使用 uv 直接运行
 
 ```bash
 git clone https://github.com/assast/outlookEmail.git
 cd outlookEmail
-pip install -r requirements.txt
+uv sync
 export SECRET_KEY=your-secret-key-here
-python web_outlook_app.py
+uv run python web_outlook_app.py
 ```
 
 访问 `http://localhost:5000` 即可使用。
 如果是服务器部署，仍然建议显式设置固定 `SECRET_KEY`。
-
-### 使用 Docker Compose
-
-```yaml
-version: '3.8'
-services:
-  outlook-mail-reader:
-    image: ghcr.io/assast/outlookemail:latest
-    container_name: outlook-mail-reader
-    ports:
-      - "5000:5000"
-    volumes:
-      - ./data:/app/data
-    environment:
-      - LOGIN_PASSWORD=admin123
-      - SECRET_KEY=your-secret-key-here
-      - FLASK_ENV=production
-    restart: unless-stopped
-```
-
-```bash
-docker-compose up -d
-```
 
 ## ✨ 功能特性
 
