@@ -59,7 +59,6 @@ cp .env.example .env
 
 - `SECRET_KEY`
 - `LOGIN_PASSWORD`
-- `OUTLOOKEMAIL_IMAGE`（如需切换到指定版本，例如 `ghcr.io/Thinker-Joe/outlookemail:v2.0.7`）
 
 ### 2）直接拉取并启动
 
@@ -155,7 +154,7 @@ python -c 'import secrets; print(secrets.token_hex(32))'
 
 ## 端口映射
 
-默认映射 5000 端口，可以在 `docker-compose.yaml` 或 `.env` 中修改：
+默认映射 5000 端口，如需改端口可直接编辑 `docker-compose.yaml`：
 
 ```yaml
 ports:

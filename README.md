@@ -66,7 +66,7 @@ docker run -d \
 
 ```bash
 cp .env.example .env
-# 修改 .env 里的 SECRET_KEY 等配置
+# 修改 .env 里的 SECRET_KEY / LOGIN_PASSWORD
 docker compose pull
 docker compose up -d
 ```
