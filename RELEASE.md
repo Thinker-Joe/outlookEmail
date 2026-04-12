@@ -74,11 +74,11 @@ git push origin v1.0.1
 
 The GitHub Actions workflow publishes these image tags:
 
-- `ghcr.io/Thinker-Joe/outlookemail:latest` → stable default branch build
-- `ghcr.io/Thinker-Joe/outlookemail:main` → latest `main`
-- `ghcr.io/Thinker-Joe/outlookemail:dev` → latest `dev`
-- `ghcr.io/Thinker-Joe/outlookemail:vX.Y.Z` → tagged release image
-- `ghcr.io/Thinker-Joe/outlookemail:sha-<commit>` → exact commit image
+- `ghcr.io/thinker-joe/outlookemail:latest` → stable default branch build
+- `ghcr.io/thinker-joe/outlookemail:main` → latest `main`
+- `ghcr.io/thinker-joe/outlookemail:dev` → latest `dev`
+- `ghcr.io/thinker-joe/outlookemail:vX.Y.Z` → tagged release image
+- `ghcr.io/thinker-joe/outlookemail:sha-<commit>` → exact commit image
 
 ## Windows executable
 

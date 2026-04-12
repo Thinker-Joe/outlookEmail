@@ -20,7 +20,7 @@
 
 ```bash
 # 拉取最新镜像
-docker pull ghcr.io/Thinker-Joe/outlookemail:latest
+docker pull ghcr.io/thinker-joe/outlookemail:latest
 
 # 运行容器
 docker run -d \
@@ -29,7 +29,7 @@ docker run -d \
   -v $(pwd)/data:/app/data \
   -e LOGIN_PASSWORD=admin123 \
   -e SECRET_KEY=your-secret-key-here \
-  ghcr.io/Thinker-Joe/outlookemail:latest
+  ghcr.io/thinker-joe/outlookemail:latest
 
 # 查看日志
 docker logs -f outlook-mail-reader
@@ -167,11 +167,11 @@ ports:
 
 ### 可用镜像标签
 
-- `ghcr.io/Thinker-Joe/outlookemail:latest` - 默认稳定版（默认分支）
-- `ghcr.io/Thinker-Joe/outlookemail:main` - main 分支最新版本
-- `ghcr.io/Thinker-Joe/outlookemail:dev` - dev 分支最新开发版
-- `ghcr.io/Thinker-Joe/outlookemail:v1.0.0` - 指定正式版本镜像
-- `ghcr.io/Thinker-Joe/outlookemail:sha-<commit>` - 指定某次提交对应镜像
+- `ghcr.io/thinker-joe/outlookemail:latest` - 默认稳定版（默认分支）
+- `ghcr.io/thinker-joe/outlookemail:main` - main 分支最新版本
+- `ghcr.io/thinker-joe/outlookemail:dev` - dev 分支最新开发版
+- `ghcr.io/thinker-joe/outlookemail:v1.0.0` - 指定正式版本镜像
+- `ghcr.io/thinker-joe/outlookemail:sha-<commit>` - 指定某次提交对应镜像
 
 ### 更新镜像
 

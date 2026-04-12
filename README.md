@@ -25,9 +25,9 @@
 
 Docker 镜像标签约定：
 
-- `ghcr.io/Thinker-Joe/outlookemail:latest`：默认稳定版（来自默认分支）
-- `ghcr.io/Thinker-Joe/outlookemail:dev`：开发分支最新构建
-- `ghcr.io/Thinker-Joe/outlookemail:v1.0.0`：正式版本镜像（例如 v1.0.0）
+- `ghcr.io/thinker-joe/outlookemail:latest`：默认稳定版（来自默认分支）
+- `ghcr.io/thinker-joe/outlookemail:dev`：开发分支最新构建
+- `ghcr.io/thinker-joe/outlookemail:v1.0.0`：正式版本镜像（例如 v1.0.0）
 
 ### 方式一：下载 Windows `exe`(win可用)
 
@@ -48,7 +48,7 @@ Docker 镜像标签约定：
 
 ```bash
 # 拉取最新镜像
-docker pull ghcr.io/Thinker-Joe/outlookemail:latest
+docker pull ghcr.io/thinker-joe/outlookemail:latest
 
 # 运行容器
 docker run -d \
@@ -57,7 +57,7 @@ docker run -d \
   -v $(pwd)/data:/app/data \
   -e LOGIN_PASSWORD=admin123 \
   -e SECRET_KEY=your-secret-key-here \
-  ghcr.io/Thinker-Joe/outlookemail:latest
+  ghcr.io/thinker-joe/outlookemail:latest
 ```
 
 ### 方式三：使用 Docker Compose 直接部署（无需本地构建）

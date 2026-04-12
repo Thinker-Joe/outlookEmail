@@ -1,6 +1,6 @@
 services:
   outlook-mail-reader:
-    image: ghcr.io/Thinker-Joe/outlookemail:latest
+    image: ghcr.io/thinker-joe/outlookemail:latest
     restart: unless-stopped
     ports:
       - "5000:5000"
