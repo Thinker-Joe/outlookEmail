@@ -155,6 +155,37 @@ curl -H "X-API-Key: your-api-key" \
   "http://localhost:5000/api/external/emails?email=user%2Balias%40example.com"
 ```
 
+### POST `/api/external/emails/delete`
+
+删除指定邮箱下的一个或多个邮件。
+
+#### 请求体
+
+| 参数 | 类型 | 必填 | 说明 |
+| --- | --- | --- | --- |
+| `email` | string | 是 | 主邮箱地址 |
+| `ids` | string[] | 是 | 需要删除的邮件 ID 列表 |
+
+#### 请求示例
+
+```bash
+curl -X POST "http://localhost:5000/api/external/emails/delete" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{"email":"user@outlook.com","ids":["AAMkAG..."]}'
+```
+
+#### 成功响应示例
+
+```json
+{
+  "success": true,
+  "success_count": 1,
+  "failed_count": 0,
+  "errors": []
+}
+```
+
 #### 成功响应示例
 
 ```json
@@ -675,8 +706,8 @@ curl -H "X-API-Key: your-api-key" \
 | DELETE | `/api/temp-emails/<email_addr>` | 路径参数 `email_addr` | 删除临时邮箱 |
 | GET | `/api/temp-emails/<email_addr>/messages` | 路径参数 `email_addr` | 获取临时邮箱邮件列表 |
 | GET | `/api/temp-emails/<email_addr>/messages/<message_id>` | 路径参数 | 获取临时邮件详情 |
-| DELETE | `/api/temp-emails/<email_addr>/messages/<message_id>` | 路径参数 | 当前返回“单封删信功能已暂时关闭” |
-| DELETE | `/api/temp-emails/<email_addr>/clear` | 路径参数 | 当前返回“清空功能已暂时关闭” |
+| DELETE | `/api/temp-emails/<email_addr>/messages/<message_id>` | 路径参数 | 删除单封临时邮件（Cloudflare 提供商暂不支持） |
+| DELETE | `/api/temp-emails/<email_addr>/clear` | 路径参数 | 清空临时邮箱邮件（Cloudflare 提供商暂不支持） |
 | POST | `/api/temp-emails/<email_addr>/refresh` | 路径参数 | 主动刷新一次临时邮箱邮件 |
 
 `GET /messages` 与 `POST /refresh` 都会返回统一结构的 `emails` 列表。`POST /refresh` 还会包含 `new_count`，表示本次新保存的邮件数量。

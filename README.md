@@ -345,6 +345,11 @@ curl -H "X-API-Key: your-api-key" \
 
 curl -H "X-API-Key: your-api-key" \
   "http://localhost:5000/api/external/emails?email=user%2Balias%40example.com"
+
+curl -X POST "http://localhost:5000/api/external/emails/delete" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{"email":"user@outlook.com","ids":["AAMkAG..."]}'
 ```
 
 如果邮箱或别名里带特殊字符：

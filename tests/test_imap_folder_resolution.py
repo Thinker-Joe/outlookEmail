@@ -297,6 +297,40 @@ class ExternalAccountsApiTests(unittest.TestCase):
         self.assertNotIn('imap_host', account)
         self.assertNotIn('imap_port', account)
 
+    @patch.object(web_outlook_app, 'delete_emails_graph')
+    def test_external_delete_emails_uses_api_key_and_graph_delete(self, delete_graph_mock):
+        delete_graph_mock.return_value = {
+            'success': True,
+            'success_count': 1,
+            'failed_count': 0,
+            'errors': [],
+        }
+
+        response = self.client.post(
+            '/api/external/emails/delete',
+            headers={'X-API-Key': 'test-external-key'},
+            json={'email': 'user@outlook.com', 'ids': ['msg-1']},
+        )
+
+        self.assertEqual(response.status_code, 200)
+        payload = response.get_json()
+        self.assertTrue(payload['success'])
+        delete_graph_mock.assert_called_once()
+        args = delete_graph_mock.call_args.args
+        self.assertEqual(args[2], ['msg-1'])
+
+    def test_external_delete_emails_requires_ids(self):
+        response = self.client.post(
+            '/api/external/emails/delete',
+            headers={'X-API-Key': 'test-external-key'},
+            json={'email': 'user@outlook.com', 'ids': []},
+        )
+
+        self.assertEqual(response.status_code, 400)
+        payload = response.get_json()
+        self.assertFalse(payload['success'])
+        self.assertIn('ids', payload['error'])
+
 
 class BatchForwardingApiTests(unittest.TestCase):
     def setUp(self):

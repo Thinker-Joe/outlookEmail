@@ -529,3 +529,37 @@ def api_external_get_emails():
         all_errors['imap_old'] = imap_old_result.get('error')
 
     return jsonify({'success': False, 'error': '无法获取邮件，所有方式均失败', 'details': all_errors})
+
+
+@app.route('/api/external/emails/delete', methods=['POST'])
+@csrf_exempt
+@api_key_required
+def api_external_delete_emails():
+    """对外 API：通过 API Key 删除指定邮箱的邮件"""
+    data = request.get_json(silent=True) or {}
+    email_addr = str(data.get('email', '') or '').strip()
+    message_ids = data.get('ids', [])
+
+    if not email_addr or not isinstance(message_ids, list) or not message_ids:
+        return jsonify({'success': False, 'error': '缺少 email 或 ids 参数'}), 400
+
+    normalized_ids = [str(message_id or '').strip() for message_id in message_ids if str(message_id or '').strip()]
+    if not normalized_ids:
+        return jsonify({'success': False, 'error': 'ids 参数不能为空'}), 400
+
+    account = get_account_by_email(email_addr)
+    if not account:
+        return jsonify({'success': False, 'error': '邮箱账号不存在'}), 404
+
+    if account.get('account_type') == 'imap':
+        return jsonify({'success': False, 'error': 'IMAP 账号暂不支持邮件删除'}), 400
+
+    proxy_url = ''
+    if account.get('group_id'):
+        group = get_group_by_id(account['group_id'])
+        if group:
+            proxy_url = group.get('proxy_url', '') or ''
+
+    graph_res = delete_emails_graph(account['client_id'], account['refresh_token'], normalized_ids, proxy_url)
+    status_code = 200 if graph_res.get('success') else 502
+    return jsonify(graph_res), status_code

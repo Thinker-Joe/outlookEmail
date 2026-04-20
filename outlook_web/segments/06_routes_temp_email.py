@@ -468,6 +468,17 @@ def delete_temp_email_message(message_id: str) -> bool:
         return False
 
 
+def clear_temp_email_message_cache(email_addr: str) -> bool:
+    """清空某个临时邮箱在本地缓存中的邮件"""
+    db = get_db()
+    try:
+        db.execute('DELETE FROM temp_email_messages WHERE email_address = ?', (email_addr,))
+        db.commit()
+        return True
+    except Exception:
+        return False
+
+
 def get_temp_email_count() -> int:
     """获取临时邮箱数量"""
     db = get_db()
@@ -1036,14 +1047,56 @@ def api_get_temp_email_message_detail(email_addr, message_id):
 @login_required
 def api_delete_temp_email_message(email_addr, message_id):
     """删除临时邮件"""
-    return jsonify({'success': False, 'error': '临时邮箱单封删信功能已暂时关闭'})
+    temp_email = get_temp_email_by_address(email_addr)
+    provider = temp_email.get('provider', 'gptmail') if temp_email else 'gptmail'
+
+    if provider == 'duckmail':
+        token = get_duckmail_token_for_email(email_addr)
+        if not token:
+            token = duckmail_refresh_token(email_addr)
+        if not token:
+            return jsonify({'success': False, 'error': 'DuckMail Token 无效，无法删除邮件'})
+        if not duckmail_delete_message(token, message_id):
+            return jsonify({'success': False, 'error': 'DuckMail 删除邮件失败'})
+    elif provider == 'cloudflare':
+        return jsonify({'success': False, 'error': 'Cloudflare 临时邮箱当前不支持单封删信'})
+    else:
+        if not delete_temp_email_from_api(message_id):
+            return jsonify({'success': False, 'error': 'GPTMail 删除邮件失败'})
+
+    delete_temp_email_message(message_id)
+    return jsonify({'success': True, 'message': '邮件已删除'})
 
 
 @app.route('/api/temp-emails/<path:email_addr>/clear', methods=['DELETE'])
 @login_required
 def api_clear_temp_email_messages(email_addr):
     """清空临时邮箱的所有邮件"""
-    return jsonify({'success': False, 'error': '临时邮箱清空功能已暂时关闭'})
+    temp_email = get_temp_email_by_address(email_addr)
+    provider = temp_email.get('provider', 'gptmail') if temp_email else 'gptmail'
+
+    if provider == 'duckmail':
+        token = get_duckmail_token_for_email(email_addr)
+        if not token:
+            token = duckmail_refresh_token(email_addr)
+        if not token:
+            return jsonify({'success': False, 'error': 'DuckMail Token 无效，无法清空邮件'})
+        messages = duckmail_get_messages(token) or []
+        errors = []
+        for msg in messages:
+            message_id = str(msg.get('id', '') or '').strip()
+            if message_id and not duckmail_delete_message(token, message_id):
+                errors.append(message_id)
+        if errors:
+            return jsonify({'success': False, 'error': f'DuckMail 清空失败，剩余 {len(errors)} 封邮件未删除'})
+    elif provider == 'cloudflare':
+        return jsonify({'success': False, 'error': 'Cloudflare 临时邮箱当前不支持清空邮件'})
+    else:
+        if not clear_temp_emails_from_api(email_addr):
+            return jsonify({'success': False, 'error': 'GPTMail 清空邮件失败'})
+
+    clear_temp_email_message_cache(email_addr)
+    return jsonify({'success': True, 'message': '邮箱邮件已清空'})
 
 
 @app.route('/api/temp-emails/<path:email_addr>/refresh', methods=['POST'])
